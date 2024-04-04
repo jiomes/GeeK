@@ -1,0 +1,30 @@
+# 将 `payload` 变量名改为 `data`
+data = {
+    "title": "推送标题",
+    "body": "推送内容",
+    "image": "推送图片 URL"
+}
+
+# 将 `headers` 变量名改为 `headers`
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY"
+}
+
+# 将 `requests.post()` 函数改为 `post()` 函数
+def post(url, data, headers):
+    return requests.post(url, json=data, headers=headers)
+
+# 使用 `f-string` 格式化字符串
+title = f"推送标题: {data['title']}"
+body = f"推送内容: {data['body']}"
+image = f"推送图片: {data['image']}"
+
+# 使用 `join()` 方法将字符串连接起来
+message = f"{title}\n{body}\n{image}"
+
+# 使用 `send_message()` 函数发送推送消息
+def send_message(message):
+    # 发送推送消息的代码
+
+# 发送推送消息
+send_message(message)
