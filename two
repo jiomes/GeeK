@@ -1,0 +1,55 @@
+import os
+import time
+import threading
+
+from app import App
+from settings import Settings
+
+# 全局变量
+app = App()
+settings = Settings()
+
+# 后台冻结应用列表
+frozen_apps = []
+
+# 白名单应用列表
+whitelist_apps = []
+
+# 清理阀值
+threshold = 10
+
+# 清理间隔
+interval = 60 * 60  # 1 小时
+
+# 初始化
+app.init()
+
+# 获取白名单应用
+whitelist_apps = settings.get("whitelist_apps")
+
+# 启动清理线程
+def start_cleaner():
+    while True:
+        # 获取后台冻结应用
+        frozen_apps = app.get_frozen_apps()
+
+        # 过滤白名单应用
+        frozen_apps = [app for app in frozen_apps if app not in whitelist_apps]
+
+        # 清理应用
+        if len(frozen_apps) >= threshold:
+            app.clear_apps(frozen_apps)
+
+        # 等待清理间隔
+        time.sleep(interval)
+
+# 启动清理线程
+cleaner = threading.Thread(target=start_cleaner)
+cleaner.daemon = True
+cleaner.start()
+
+# 主循环
+while True:
+    # 处理用户输入
+    pass
+
